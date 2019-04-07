@@ -1,5 +1,28 @@
 \begin{abstract}%
 
-The humanity falls when people start to drink coffee and coke ...
+The Amazon Picking/Robotics Challenges showed
+significant progress in object picking from a cluttered scene,
+yet object placing remains challenging. Pose-aware placing
+based on human and machine readable pieces on an object
+is useful. For example, the brandname of an object placed
+on a shelf should be facing the human customers. Similarly,
+the barcode of an object placed on a conveyer should be
+facing a machine scanner. There are robotic vision challenges
+in the object placing task: a) the semantics and geometry
+of the object to be placed need to be analysed jointly; b)
+and the occlusions among objects in a cluttered scene could
+make it hard for proper understanding and manipulation. To
+overcome these challenges, I develop a pose-aware placing
+system by spotting the semantic labels (e.g., brandnames) of
+objects in a cluttered tote, and then carrying out a sequence
+of actions to place the objects on a shelf or a conveyor with
+desired poses. My major contributions include 1) providing an
+open benchmark dataset of objects, brandnames, and barcodes
+with multi-view segmentation for training and evaluations; 2)
+showing that active manipulation with two cooperative manipulators and grippers
+can effectively handle occlusions of brandnames. I analyzed
+the success rates and discussed the failure cases to provide
+insights for future applications. All data and benchmarks are
+available at https://text-pick-n-place.github.io/TextPNP/
 
 \end{abstract}
