@@ -10,3 +10,4 @@ build:
 	$(LATEX_BUILD_CMD) $(TARGET).tex | grep 'Warning\|pages'
 clean:
 	rm -rf *.aux *.log *.gz *.bbl *.blg *.lof *.lot *.toc *.out
+

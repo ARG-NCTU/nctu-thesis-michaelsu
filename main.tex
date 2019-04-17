@@ -1,4 +1,4 @@
-\documentclass[]{thesis}  % draft mode (default)
+\documentclass[zh]{thesis}  % draft mode (default)
 %\documentclass[review]{thesis}  % review mode (show contents & reference only)
 %\documentclass[watermark,final]{thesis}  % final mode (version for library)
 
@@ -8,7 +8,14 @@
 
 \usepackage{multirow}     % for multi-row table
 \usepackage{booktabs}     % table style used in books
-
+\usepackage{cite}
+\usepackage{pdfpages}     % input pdf
+\usepackage{amsmath,amsthm,amssymb}
+\usepackage{fontspec}
+\usepackage{xcolor}
+\usepackage{colortbl,booktabs}
+\usepackage{titlesec}
+%\usepackage{bbding}
 %-------------------------------------------------------------------------------
 % Configuration
 %-------------------------------------------------------------------------------
@@ -46,7 +53,7 @@
 \input{ack/ack}
 
 % 題獻頁 (Only shown in the final mode of a PhD dissertation)
-\input{ack/dedication}
+%\input{ack/dedication}
 
 %-------------------------------------------------------------------------------
 % 目錄
@@ -64,11 +71,11 @@
 \mainmatter
 
 % 內文, 請依照章節順序擺放
-\input{chapters/1-intro}
-\input{chapters/2-related-work}
-\input{chapters/3-system}
-\input{chapters/4-experiments}
-\input{chapters/5-conclusions}
+\input{chapters/1-intro_bak}
+\input{chapters/2-doccls}
+\input{chapters/3-secorder}
+\input{chapters/4-ref}
+\input{chapters/5-figure}
 
 %-------------------------------------------------------------------------------
 % 參考文獻
@@ -91,28 +98,28 @@
 %
 % For non IEEEtran users:
 %   Please delete bib/ieeeBSTcontrol from \bibliography{}
-\bibliography{bib/ieeeBSTcontrol,bib/thesis,bib/egbib}
+\bibliography{bib/ieeeBSTcontrol,bib/thesis}
 %-------------------------------------------------------------------------------
 % 附錄
 %-------------------------------------------------------------------------------
 
 % Start appendix
-\appendix
+%\appendix
 
 % Add appendicies to "Table of Contents"
 \addAppxToContents
 
 % 請從此開始依序擺放附錄
-\input{appx/1-appendix}
+%\input{appx/1-appendix}
 
 %-------------------------------------------------------------------------------
 % 作者簡歷
 %-------------------------------------------------------------------------------
 
 % 簡歷 (Only shown in a PhD dissertation)
-\input{author/cv}
+%\input{author/cv}
 
 % 著作列表 (Only shown in a PhD dissertation)
-\input{author/publications}
+%\input{author/publications}
 
 \end{document}
