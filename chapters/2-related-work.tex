@@ -1,147 +1,42 @@
-\chapter{Related work}
+\chapter{文獻回顧}
 \label{chapter:relate-work}
 
-\textbf{thesis.cls} 是本 template 的核心, 其主要功能是產生論文的封面, 設定版面與章節樣式, 並提供自動選擇字型的功能.
-因大部分需要使用者輸入的資訊(e.g. author name)都有拉出對應的變數讓使用者設定, 因此
-絕大部分的情況下, 你是不需要動到 thesis.cls 的.
-當然, 如果你有發現 bug 或是覺得哪些地方有更好的寫法, 也請麻煩在 github 上發個 issue 告訴我吧, 謝謝!
+\section{亞馬遜拾取/機器人挑戰(Amazon Picking/Robotics Challanges 2015-2017)}
+亞馬遜拾取挑戰 (Amazon Picking Challenge)、亞馬遜機器人挑戰 (Amazon
+Robotics Challenge) 是由亞馬遜公司所創辦的大型競賽,主要目的為在
+大型倉儲中商品可能高達上千種,層層排列的大型貨架,如以人力來依照訂單
+集貨,不僅需要查看商品存放的位置還必須爬上貨梯進行搬運,倘若使用機器
+人自動化地拾取商品,能夠大量縮短 集貨的時間。由於真實的倉儲的環境使得
+機器人能活動的空間有限,且必須使機器人能夠自動辨認大量的商品種類,抓
+取並放置正確的位置,對於倉儲自動化有相當大的推進。在上架任務中,物體
+姿態估計是十分重要的一環,以六個自由度之物體姿態主要利用預先建制的三
+維 CAD 模型,與深度攝影機所獲得的點雲(Point Cloud)進行點雲匹配如 ICP
+(Iterative Closest Point) ~\cite{pomerleau2013comparing},
+需以點雲資訊匹配三維模型,將實際物體的點雲從
+深度攝影機所得到的原始點雲加以分離,才能獲得較好的效果,利用物體偵測
+方法為將二維候選框資訊投影至三維得到物體的三維點雲,有相當大的可能引
+入背景點雲進而影響 ICP 匹配結果,而採用物體語意分割(Semantic
+Segmentation)的方法能夠將物體輪廓較精確的標記,將二維像素分類結果投影
+至三維後能得到較單純的物體點雲,Amazon Picking Challenge 2016 競賽中
+MIT-Princeton 團隊於提出的視覺系統~\cite{zeng2016multi}採用了物體語意分割與 ICP 點雲匹配的
+方法。
 
-以下介紹如何設定封面資訊與字型, thesis.cls 提供的 options, 以及摘要等檔案放置的位置.
-
-\section{封面資訊}
-
-封面資訊的設定指令全部都放在 \textit{config/frontmatters.tex} 中, 請在此設定你論文的 title, author name, (co-)advisor name, college name (院), institute name (所), field (領域), 日期等資訊.
-
-\textbf{注意:} 如果沒有共同指導教授, \textbackslash coadvisorA, \textbackslash coadvisorAzh, \textbackslash coadvisorB \textbackslash coadvisorBzh 的\{ \}請留白.
-
-\section{字型設定}
-\label{sec:fonts}
-
-為了避免在不同作業系統上編譯文件時要重新設定中文字型, thesis.cls 提供了自動選擇字型的功能.
-(請在 xelatex 加入 \textbf{-shell-escape} 才能開啟此功能)
-
-\subsection{預設英文字型}
-
-thesis.cls 預設的英文字型在全部作業系統上皆為
-\begin{itemize}
-\item 本文字型(main font): \textbf{Times New Roman}
-\item 無襯線字型(sans-serif font): \textbf{Arial}
-\end{itemize}
-
-\subsection{預設中文字型}
-
-thesis.cls 預設的中文字型則詳列於 Table~\ref{table:zhfonts}.
-簡單來說, 本文使用``標楷體", 封面字型則使用``明體".
-
-% table
-\begin{table}[h]
-\centering
-% [] 顯示在 list of tables 的文字
-% {} 顯示在表格上方的文字
-\caption[Default Chinese font settings]{預設的中文字型}
-\label{table:zhfonts}
-\begin{tabular}{@{}lll@{}}
-\toprule
-作業系統     & 本文字型     & 明體字 (用於封面) \\ \midrule
-Windows  & 標楷體      & 新細明體       \\
-Linux    & AR PL 中楷 & AR PL 明體   \\
-Mac OS X & 楷體-繁     & 儷宋 Pro     \\ \bottomrule
-\end{tabular}
-\end{table}
-
-\subsection{修改預設字型}
-
-thesis.cls 提供了以下四個修改預設字型的指令.
-\textbf{注意: 如果修改了預設字型, thesis.cls 則不會再根據所處的作業系統自動選擇字型.}
-我將此四個指令獨立出來放在 \textit{config/fonts.tex} 裡面.
-如果不想修改預設字型, \{ \} 請留白.
-
-\begin{itemize}
-
-\item \textbf{\textbackslash mainfontzh\{\}} 修改預設中文本文字型
-
-\item \textbf{\textbackslash mingfontzh\{\}} 修改預設中文明體字型
-
-\item \textbf{\textbackslash mainfont\{\}} 修改預設英文本文字型
-
-\item \textbf{\textbackslash sansfont\{\}} 修改預設英文無襯線字型
-
-\end{itemize}
+\section{主動式視覺與主動式操作}
+~\cite{sunderhauf2018limits}提及機器人視覺與電腦視覺領域的主要差異為:機器人視覺最後產出的為行動
+(action)而非電腦視覺的資訊(information),電腦視覺或機器學習常以既有資
+料集進行訓練,並著重於資料集的準確度提升,但機器人視覺則與環境互動,特
+別關注:主動式機器人視覺(active vision)、主動式操作(active manipulation)。主
+動式機器人視覺可透過機器人去控制移動攝影機,改變其位置與觀察視角,藉此去得到更多的環境資訊去改善優化機器人對環境的感知能力,改善系統的感
+知信心指數、解決感知上的歧義、最小化被遮蔽的、反射等問題。主動式操作則是進一步利用會去改變場景去幫助感知的效果,例如:機器手臂可以去移動
+被遮擋的物品去得到被隱藏的資訊。
+這樣的概念被應用於這些研究中： \cite{atanasov2014nonmyopic} \cite{doumanoglou2016recovering} \cite{malmir2017deep}採取主動式機器人視覺的概念，採用``next-best viewpoint''的策略去改善感知的信心指數，並應用於物件偵測上。
+ \cite{zeng2018robotic} 則偏向更高階的主動式操作，採取``grasp-first-then-recognize''策略去改善雜亂環境中糟糕的感知效果。
+本研究就是藉由主動式操作,對於商標文字被遮蔽的物件進行操作,進而找出商標物件並正確進行上架。
 
 
-\section{Options provided by thesis.cls}
 
-thesis.cls 提供碩士與博士論文模板, 並提供初稿與終稿等選項讓使用者自行印出的版面格式.
-thesis.cls 的 options 設定就在 \textbf{main.tex} 的第一行
+\section{夾取成功率預測}
 
-\textbackslash documentclass[\textbf{<options>}]\{thesis\}
+\section{雙機械手臂協作}
 
-以下介紹 thesis.cls 所提供的 options
-
-\newpage
-
-\subsection{給沒空的人看的無腦版本}
-
-\paragraph{英文碩士論文} 請設定
-
-\begin{itemize}
-\item 初稿\\
-\textbackslash documentclass[]\{thesis\}
-\item 終稿\\
-\textbackslash documentclass[watermark,final]\{thesis\}
-\item 只顯示論文內文, 附錄, 和 reference\\
-\textbackslash documentclass[review]\{thesis\}
-\end{itemize}
-
-\paragraph{中文碩士論文} 在 [ ] 中多加一個 `zh' 就會顯示中文的章節編號和標題了, 舉例來說
-
-\begin{itemize}
-\item \textbackslash documentclass[zh,watermark,final]\{thesis\}
-\end{itemize}
-
-
-\paragraph{英文博士論文} 請在 [ ] 中多加一個 `phd', 舉例來說
-
-\begin{itemize}
-\item \textbackslash documentclass[phd,watermark,final]\{thesis\}
-\end{itemize}
-
-\paragraph{中文博士論文} 一樣在 [ ] 中多加一個 `zh' 就可以了, 舉例來說
-
-\begin{itemize}
-\item \textbackslash documentclass[phd,zh,watermark,final]\{thesis\}
-\end{itemize}
-
-\paragraph{雙面列印} 預設為單面列印, 如果要雙面列印, 請在 [ ] 中加入 'twoside', 比方說
-
-\begin{itemize}
-\item \textbackslash documentclass[twoside,phd,watermark,final]\{thesis\}
-\end{itemize}
-
-\paragraph{Known Issue!} 在編譯過英文版後, 加入 `zh' 編譯中文版後的\textbf{第一次編譯}時, XeLaTeX 會出錯.
-但只要再編譯一次就沒問題了.
-也就是說從英文版轉到中文版的編譯步驟變成:
-
-\hspace{2em} \textbf{XeLaTeX} (\textbf{\textit{Failed!}}) $\rightarrow$ \textbf{XeLaTeX} $\rightarrow$ \textbf{BibTeX} $\rightarrow$ \textbf{XeLaTeX} $\rightarrow$ \textbf{XeLaTeX}
-
-\subsection{詳細版的 Class Options}
-
-thesis.cls 提供的 options 詳列於 Table~\ref{table:clsoptions}.
-標注 (default) 代表 thesis.cls 的預設值, 不需要寫在 [ ] 內.
-
-% 把 table 的內容放在另一個檔案再 load, 讓 tex 看起來乾淨一點
-\input{tables/table-classopt}
-
-\section{論文檔案位置}
-
-Table~\ref{table:pages} 詳列了摘要, 誌謝等頁面的位置.
-如果你使用 Texmaker 之類的 editor 的話, 可以從 main.tex 連結到這些檔案.
-
-\textbf{注意:} 題獻頁, 自傳, 著作目錄只有博士論文才需要填寫, 也只有在 \textbackslash documentclass[] 加入 `phd' 選項後才會被編譯.
-
-\input{tables/table-files}
-
-至於論文內文的檔案要放哪裡, 則看個人喜好.
-我自己的習慣是把論文的每一個 chapter 獨立成一個 .tex 檔, 放在 \textit{chapters/} 下.
-而附錄也是寫成獨立的 .tex 檔, 放在另一個資料夾下, 方便管理.
-請參考此 template 的 \textit{chapters/} 與 \textit{appx/} 兩個資料夾.
+\section{機器人操作領域之基準訓練測試資料集}
