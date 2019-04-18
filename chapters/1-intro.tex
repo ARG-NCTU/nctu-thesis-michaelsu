@@ -1,50 +1,43 @@
 \chapter{Introduction}
 \label{chapter:intro}
 
-% Motivation
-There is a great need of robotic pick-and-place systems in many domains, ranging from warehouse automation, service robots, or grocery stores.
-Recently more and more robots applied to works in the factory assembly production line or warehouse to reduce human labors. The world-class competitions of Amazon Picking/Robotics Challenges (APC/ARC) 2015-2017 further brought together the teams to develop the picking systems for known or unknown objects from the shelves or totes. The common workflow for picking tasks, especially the solutions for APC/ARC, involve the localization of individual objects via pixel-wise semantic segmentation (e.g. Fully Convolution Networks~\cite{long2015fully}) or bounding-box-based object detection (e.g. Faster RCNN~\cite{ren2015faster}, SSD~\cite{liu2016ssd}, YOLO~\cite{redmon2016you}, etc), estimation of object poses (e.g., geometric model fitting methods such as iterative closest points~\cite{pomerleau2013comparing}), selection of objects to pick (e.g, estimate the probability of picking success~\cite{zeng2018robotic}), and grasping the selected objects. Predicting grasping locations using learning approaches have also been extensively studied~\cite{redmon2015real, mahler2016dex1, mahler2017dex, mahler2017dex3}.
+\section{背景與動機}
 
-\begin{figure}[t]
-\includegraphics[width=1.0\columnwidth]{./figures/pose-aware-placing-teaser-v3.jpg}
-\centering
-\caption{We utilize product brandname, one of the ``semantic labels,'' for pose-aware placing. We carry out active manipulation with two cooperative robotic arms to handle object occlusions (e.g., brandname facing down). Bottom left to right: a vacuum gripper picks a target object using object-level or brandname-level affordance prediction, the brandname is then used to predict grasp, and finally a two-finger gripper complete placing.}
+在人工智慧的浪潮下,已有愈來愈多工廠只餘機器人在工作,人們只需定期去
+工廠檢查確保正常營運。科技技術的進步往往能便利人們的生活，也漸漸改變人們生
+活的方式,以日常生活舉例,當需要購買生活用品時會去便利超商、量販店或是直
+接由網路購物商城購買商品,最近更出現了不須服務人員的無人商店,如:位於西
+雅圖的 AmazonGo 無人商店,主打顧客挑選商品完就可以帶著商品離開,不須交由
+店員結帳付款,而是自動辨識顧客挑選 的商品進行信用卡扣款,省去了等待排隊
+的時間;而網路購物也是相當便利,由廠商針對顧客網路訂單從倉儲進行集貨並由
+貨運公司進行運輸到客戶手中，其中許多廠商為了提高集貨的效率已經著手於倉儲
+的自動化。然而在無人商店跟倉庫的應用中，現今還無法達成實質無人化，原因是因為如無人商店內商品上架仍需人去逐一整齊擺放，而倉庫在進行商品分類與打包時也須有人去掃描商品條碼才可以知道商品代號和該怎麼打包。這兩者任務雖有所不同，但皆可歸類為需針對商品上語意標籤如品牌文字或條碼去進行套定姿態擺放任務。結合語意標籤進行特定姿勢擺放任務是一較新穎之領域,相當具有挑戰性。便可實際應用於倉庫與無人商店，將可降低大量人力與時間成本。
+
+
+\section{目標與貢獻}
+
+\subsection{問題定義}
+我將物品表面的一小部分作為語意標籤，此語意標籤不僅可以作為物品姿態辨識的依據，更可以做為操作行為的依據，物品上可能有不只一個語意標籤如品牌文字、條形碼等，本研究將專注於以品牌文字為線索進行特定姿勢放置任務。
+
+\subsection{挑戰}
+\begin{itemize}
+\item 在雜亂的環境中，產品物件可能互相堆疊，造成物品部分或全部遮蔽(occlusion)。由於品牌文字可能只在產品物件的特定平面位置,也可能在初始位置即被遮蔽,
+\item 受限於機器手臂的可工作範圍，即使預測出物體姿態，相對的夾取與放置行為仍可能無法執行，或是過程中會遇到障礙物，造成任務失敗。
+\end{itemize}
+
+\subsection{論文貢獻}
+\begin{itemize}
+\item \textbf{主動式操作搭配雙手臂協作} 除卻被動利用物件辨識與姿態辨識的結果，本論文運用主動式操作概念去改變雜亂場景，去達到對單一物品與品牌文字最佳的的感知能力。本論文提出的方法不僅可以改變相機視角去看到最少遮蔽的品牌文字，也使用雙手臂協作的方式去操作商品，以達到最佳的放置成效。
+\item \textbf{建立基準商品語意資料集以訓練與測試模型與演算法效果}　在現今的影像物件分割技術下，訓練一個深度卷積神經網路需要數量龐大且有標註的資料集。
+為了訓練物件切割模型，本論文建立了一個資料集，此資料集包含20個物件，且每個物件都有條碼與品牌文字。此資料集包含來自真實世界與虛擬環境的訓練資料以及真實環境的測試集用來評估放置任務的成效。
+\end{itemize}
+
+\begin{figure}[ht]
+	\centering
+	\includegraphics[height=!, width=0.7\linewidth, keepaspectratio=true]
+	{./figures/pose-aware-placing-teaser-v3.jpg}
+  \caption{本論文利用商品文字（商品上的其中一個語意標籤）作為特殊姿態放置的依據，並設計雙手臂協做的主動式操作系統去解決物品遮蔽的問題。圖左下到右下：吸盤式假爪透過物品或品牌文字語意線索去夾取物品至空曠空間，而兩指式假爪再透過品牌文字線索去執行放置任務。}
+  \label{figure:teaser}
 \end{figure}
 
-% The importance of pose-aware placing
-
-Although picking and grasping prediction have been addressed, \emph{placing} is still not much addressed in previous work, especially when an object needs to be placed not just by its geometry. Such scenarios include product stocking, inventory taking, checkout, and others. When human customers do the shopping in a store or supermarket, they intuitively pay attention to brandname printed on the product, and therefore the products have to be placed on the shelves with the brandname facing outward. It is usually needed for a human cashier to find where the barcode is printed to identify each product while customers checkout. Therefore, estimates of semantics and geometry of object for pose-aware placing are important to create practical values.
-
-\begin{figure*}[htb]
-   \centering
-     \begin{subfigure}[t] {0.43\textwidth}
-          \includegraphics[width=\textwidth]{./figures/robot_system_v2.jpg}
-          \caption{Collaborative robotic arms for pose-aware placing. }
- 	\label{fig:robot_system}
-      \end{subfigure}
-     \begin{subfigure}[t] {0.53\textwidth}
-          \includegraphics[width=\textwidth]{./figures/affordance_v3.png}
-          \caption{Brandname-based affordance and grasp predictions. }
-	\label{fig:brandname-direction}
-      \end{subfigure}
-   \caption{Left: we propose a dual-arm cooperative system to \emph{actively} manipulate the scene to improve perception for placing. The gripper arm moves an occluding object to reveal information (the invisible brandname) hidden underneath, and the two-finger arm further predicts grasp using the brandname and completes pose-aware placing. Right: brandname can be used to predict both affordance for vacuum gripper and grasp for two-finger gripper.
-}
-\label{fig:baseline-active}
-\end{figure*}
-
-
-
-
-% semantic labels: the importance of brandname
-We refer a \emph{semantic label} as a piece of surface on an object that provide not just geometry, but also additional information to facilitate manipulations, such as a reference of a task-relevant object pose, better object duplicates handling, or inferring how to perform proper sequence of actions. There may be more than one semantic labels on an object, namely brandname, barcode, one of the six faces of a cubic object, soda can lid, and etc. This work focuses on placing task with brandname semantic labels.
-
-This paper presents an end-to-end pose-aware placing system that utilizes brandname as the reference of object pose and affordance of grippers. We contribute as follows:
-
-\paragraph{Brandname-based Affordance Prediction} Brandname is one of the semantic labels on an object, and exists on almost on every commercial product. Brandname is printed on flat surfaces on box containers or curved surfaces on cylinders, and bounded by a rectangle box. With such property, we can utilize the visibility of brandname to directly predict object affordance (the probability of picking success) for vacuum gripper or grasp for two-finger gripper.
-
-\paragraph{Active Manipulation with Actions of Two Cooperative Arms and Grippers} Other than \emph{passively} using the result of object detection and pose estimation, we present schemes to \emph{actively} manipulate the captured images in order to maximize the visibility of brandnames and individual objects. Our schemes can not only change the camera viewpoint to see the brandname with least occlusion, but also cooperate multiple robotic arms and grippers to manipulate the object, in order to achieve the desired placing.
-
-\paragraph{A Benchmark Dataset with Semantic Labels} Despite the recent progress of object segmentation, training a deep convolution neural network usually requires a huge dataset of labeled training data. Although there has been attempts to handle the constraints of novel objects and limited data, the progress is still limited. In order to train the vision algorithms for semantic labels (brandname and barcode), we construct a dataset that include over 8,000 manually-labeled images with brandnames. The dataset consist of 20 objects, and each with brandname and barcode labels. The dataset includes training data of real and virtual environments, a physical benchmark test set for carrying out placing tasks. The datasets are made publicly available~\cite{textpnp}.
-
-
-The remainder of the paper is organized as below. Section~\ref{sec:related} describes the related work on recent advances of affordance prediction, as well as active vision and manipulation. We will describe the proposed cooperative dual-arm system in Section~\ref{sec:system}, and how baseline and active manipulation are performed in Section~\ref{sec:active}.  Section~\ref{sec:dataset} describes the ``Brandname Benchmark Dataset'' including training data from real and virtual environments, and a testing set with clutter for evaluations. Section~\ref{sec:exp} provide extensive experiments for the proposed methods on the datasets. Finally, we discuss the future work in Section~\ref{sec:conclusions}.
+\section{論文架構}
