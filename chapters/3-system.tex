@@ -7,29 +7,56 @@
 \label{sec:systemarchi}
 本研究專注於透過設計資料庫並用其資料訓練夾取可行性預測系統，並以此作為線索作為雙手臂主動式操作系統的策略因此可分為三大部分：商品語意基準資料庫、夾取可行性預測系統、雙手臂主動式操作系統。基準資料庫目的在設計一個專門給日常商品的資料庫，此資料庫包含物品場景圖片、商品語意如商品整體遮罩、條碼遮罩、品牌文字遮罩，因此可利用這份資料集訓練夾取可行性預測系統，基準資料庫包含參考Amazon Picking Challenge來選取物品、實驗環境設計、並分別搭建現實與虛擬環境以蒐集資料並加以驗證。而夾取可行性預測系統則是改善~\cite{peterthesis}所提出之商品文字姿態估計系統之缺點，並改良成雙手臂夾取可行性預測系統，此系統包含品牌文字、物品語意分割、以及基於語意與三維點雲資訊之夾取可行性預測。而最後的雙手臂主動式操作系統則是設計雙手臂協作方式、手臂功能、假爪選擇與設計、以及最後執行任務之有限狀態機(Finite State Machine)。此系統的設計考量與基準資料庫物品選擇、夾取可行性預測系統環環相扣，因此接下來將先說明環境架設以及主動式操作系統硬體設計，接下來依序說明如何蒐集商品語意基準資料庫、夾取可行性預測系統。最後以主動式操作系統有限狀態機總結整體系統。
 
-\section{硬體架構}
-本研究專注於透過設計資料庫並用其資料訓練夾取可行性預測系統，並以此作為線索作為雙手臂主動式操
+\section{硬體架構與工作環境配置}
+本研究提出的系統建立在兩隻協作型手臂上。一為協作手臂UR5，並裝上Robotiq 2F-85雙指假爪作為末端效應器以及RGB-D深度攝影機Realsense SR300，另一隻手臂則是則是UR3，並裝上自製的吸盤假爪。這兩隻手臂被固定在同一張桌上，並彼此距離1公尺。此外，桌上有兩個盒子在手臂之間，一個盒子是被裝滿物品的，而另一個而是空的。裝滿物體的盒子上有配置深度攝影機，作為觀察盒子物體用。整個系統會從充滿物品的盒子開始：UR3把物體從雜亂的盒子中取出，並放到空盒或停留於空中作為暫時位置，等待UR5夾取並以特定姿勢擺放至架上固定的格子裡。
 
-\begin{figure*}[htb]
-   \centering
-     \begin{subfigure}[t] {0.43\textwidth}
-          \includegraphics[width=\textwidth]{./figures/robot_system_v2.jpg}
-          %\caption{Collaborative robotic arms for pose-aware placing. }
- 	\label{fig:robot_system}
-      \end{subfigure}
-     \begin{subfigure}[t] {0.53\textwidth}
-          \includegraphics[width=\textwidth]{./figures/affordance_v3.png}
-          %\caption{Brandname-based affordance and grasp predictions. }
-	\label{fig:brandname-direction}
-      \end{subfigure}
-   \caption{圖1.左圖：本研究提出雙手臂主動式操作系統去主動改變場景以達到改善機器人感知環境能力，並最佳化物品夾取可行性系統的效果。吸盤假爪從一個雜亂環境移動物品去取得被隱蔽或部分遮蔽的品牌文字資訊。而雙指假爪則藉由基於品牌文字之線索預測夾取點，以此去完成特定姿態的物品擺放任務。右圖：基於品牌文字，本研究可在雜亂環境中預測品牌文字姿態，並以此針對吸盤假爪與雙指假爪進行物品夾取可能性預測。
-}
-\label{fig:baseline-active}
-\end{figure*}
+\begin{figure}[ht]
+	\centering
+	\includegraphics[height=!, width=1.0\linewidth, keepaspectratio=true]
+	{./figures/hardware_archi.jpg}
+  \caption{圖1.左圖：本研究提出雙手臂主動式操作系統去主動改變場景以達到改善機器人感知環境能力，並最佳化物品夾取可行性系統的效果。吸盤假爪從一個雜亂環境移動物品去取得被隱蔽或部分遮蔽的品牌文字資訊。而雙指假爪則藉由基於品牌文字之線索預測夾取點，以此去完成特定姿態的物品擺放任務。右圖：基於品牌文字，本研究可在雜亂環境中預測品牌文字姿態，並以此針對吸盤假爪與雙指假爪進行物品夾取可能性預測。}
+  \label{figure:hardware_archi}
+\end{figure}
+
+
+\subsection{設備介紹}
+本研究專注於機器人主動式操作系統，因此手臂、假爪、感測器之選擇十分重要，因此將會逐一分析使用設備之性能以及使用原因。
+
+\paragraph{UR5與UR3協作式機械手臂}
+UR5與UR3協作機械手臂乃優傲機械人有限公司(Universal Robots)所生產之協做式機器人，乃六軸機械手臂，其特點為可支援機器人作業系統(Robotic Operation System)，適合研究人員快速開發，並擁有安全機制，任意軸碰撞到人或物體，便會自動停止。此外精度都可達至0.1mm，且每軸最快速度可以達到每秒180/360度。UR3/5的活動空間為半徑0.5/0.85m，而承重則分別是3/5 KG，因此本研究所夾取之物品皆低於3公斤以內。考量研究與未來應用之安全性、活動空間以及易開發性，本研究選擇UR5與UR3作為手臂使用。
+
+\begin{figure}[ht]
+	\centering
+	\includegraphics[height=!, width=1.0\linewidth, keepaspectratio=true]
+	{./figures/hardware_list.jpg}
+  \caption{本研究使用之感測器、機械手臂、假爪。}
+  \label{figure:hardware_list}
+\end{figure}
+
+\paragraph{Robotiq 2F-85 假爪}
+Robotiq 2F-85假爪為機器人公司Robotiq所研發，專門用於機械手臂上的2指假爪。其特色在於其假爪兩指是平行的。並非像人一般是多指靈巧手，雖然變化性較低，卻十分用來夾取形狀簡單的物品。此外此假爪夾取力道可控制從20牛頓至235牛頓，可穩定夾取物品，且重量只有0.9 公斤，並可以裝於UR5末端。它也支援本研究之平台ROS，因此本研究選擇此假爪裝於UR5上，並執行最後特定姿勢的物件夾取與放置任務。
+
+\paragraph{自製吸盤假爪系統}
+此系統乃本研究為主動式操作系統特別開發。此系統包含空氣壓縮機、真空產生器、吸盤假爪、以及控制板Arduino UNO。空氣壓縮機乃使用SWAN空氣壓縮機公司之DRS-210-39無油式空壓機，使用壓力可達7 kg/$cm^{2}$，並儲存39公升空氣。而真空產生器則採用MISUMI公司之VJHB6-7，產出之氣壓可達-0.95 kg/$cm^{2}$，且有真空產生、真空破壞等多段式氣壓調整功能。最後搭配自製之吸盤假爪，此吸盤夾爪可裝於UR3上，並補足其工作範圍較小的問題，此外吸盤內徑為0.02cm，搭配真空產生器、空氣壓縮機，垂直作用力可達3 kg，可應付市面上大部分的商品。Arduino UNO作為最簡易的控制開發版，用來控制真空產生器，調整吸盤吸力力道。
+
+\begin{figure}[ht]
+	\centering
+	\includegraphics[height=!, width=1.0\linewidth, keepaspectratio=true]
+	{./figures/hardware_list.jpg}
+  \caption{吸盤假爪系統。}
+  \label{figure:suction_gripper}
+\end{figure}
+
+\paragraph{RGB-D深度攝影機Realsense SR300}
+RGB-D 深度攝影機Realsense SR300乃Intel公司所研發，專用於觀察室內近距離場景，其利用紅外線感知深度，同時具有彩色與深度資訊，操作範圍在0.3 - 2m之間，景深為(H: 73, V: 59, D: 90)，且影格率(Frame rate)可達30fps。此感測器雖觀察視野不大，卻能得到視野內非常濃密知點雲資訊，十分適合用於觀測物品點雲，姿態預測用，此外此攝影機也有支援ROS，很適合開發者使用。因此本研究選擇將Realsense SR300安裝於UR5與盒子上，用於觀察物品。
 
 \subsection{多視角主動式視覺}
 
+
+
 \subsection{手臂假爪配置}
+
+
 
 \section{商品語意資料庫}
 
