@@ -60,3 +60,82 @@ Clutter-7                      & 20                        & 0.53               
   \caption{語意切割模型失敗範例。以品牌文字為單元，並以IoU = 0.5為門檻，定義小於0.5者為失敗的語意切割。本圖中共介紹4類常出現的失敗案例。}
   \label{figure:failure_case}
 \end{figure}
+
+\section{主動式操作系統評估}
+
+本研究的第2個貢獻是開發主動式操作系統，此系統可有效的處理物體被遮蔽的情況，有效達到特定姿態夾取與放置的任務。因此在本次實驗中採用測試集場景作為實驗場域，與baseline方法進行比較。本實驗預期能有系統的評估主動式操作系統的效果，並找出問題，作為未來改善空間。
+
+\subsection{實驗設計}
+本研究實驗主要目的為評估主動式操作系統成功率，共有6個測試場域集。實驗架設方式乃參考測試集場景，將物體放置成相同的位置擺法，接著藉由主動式操作系統或是baseline方法執行特定上架任務。物品必須被放置規定格子，並品牌文字朝前，才算成功。本研究設計了表格~\ref{}，去比較主動式操作系統與baseline的成功率。。表格縱軸為場景測試集，後3個子測試集再細分為品牌文字朝上的與品牌文字朝下的，去分析品牌文字朝上或朝下對於主動式操作系統的影響程度。在橫軸部分，為baseline與主動式操作系統的每一個動作。希望透過這個表格去解析系統的特性。表格中夾取成功(Pick Success)，定義為物品有被成功夾取，並直至放置前沒有掉落。而放置成功(Place Success)，定義為物品被放置於指定的格子中，並且品牌文字朝外。
+
+\subsection{實驗結果與討論}
+
+\paragraph{Baseline 可有效處理單一物體的場景。於雜亂(多物體)環境則不然}
+藉由實驗，於Single-1場景中，可了解baseline方法，對於單物體，且無遮蔽的環境，無論是夾取行為，都有很高的成功率(夾取達到0.92而放置達到0.88)，但當環境複雜度提高(物體增加為2個時)，於duplicated-2、Multiple-2場景中，放置成功率直接分別下降0.12與0.19。因此可發現Baseline對於雜亂環境相當敏感。
+
+\paragraph{主動式操作系統對於雜亂環境的穩健性評估}
+觀察主動式操作系統於測試場景Clutter-3的表現，無論是針對品牌文字朝上或朝下的物品，第一次夾取成功率都高達0.85以上。在愈複雜的環境(Clutter-5、Clutter-7)仍有0.74以上，可以證明主動式操作系統，藉由雙手臂協作方式，可以有效處理複雜的環境還有品牌文字朝下的狀況。此外藉由Baseline在Clutter-3、Clutter-5、Clutter-7場景低於0.5的成功率，也足以證明即使品牌文字朝上，要在雜亂環境中進行特定姿態的夾取行為，仍是十分困難，因此需要雙手臂的協作方式。在放置的成功率的比較中，主動式操作任務在品牌文字可視的情況下，比起baseline，在Clutter-3、Clutter-5、 Clutter-7也分別超出34\%、23\%、24\%。
+
+\subsection{失敗案例分析}
+主動式操作系統是2階段夾取放置行為，而第一次的夾取與放置行為對於第2次的夾取任務十分重要。換句話說，若第一次夾取或放置方式失敗，導致第2次無法成功觀察品牌文字，或是無法找到有效的夾取點，便會造成任務失敗。本部分將分析第一次使用吸盤夾爪夾取物品常出現之3個失敗案例：
+\begin{itemize}
+\item 第一個案例為吸盤假爪系統基於品牌文字為線索進行夾取可行性預測結果，但由於品牌文字面積範圍較小，且該場景品牌文字在圓柱體上。圓柱體比起長方體，原本便較少夾取點可進行夾取，適合的夾取點只有圓柱體曲面法向量垂直吸盤夾取方向向量的小範圍面積。
+\item 第二個範例為在品牌文字不可視的情況下，糟糕的物品語意切割結果會影響夾取可行性預測。導致預測出不好的夾取點，不好的夾取點會造成無法夾取物品，或夾取物品後移動時容易掉落。此外在不穩定的首次夾取，可能在第2次夾取時，物品鬆脫造成夾取姿態錯誤，最後放置失敗。
+\item 第三個範例則是在品牌文字不可視時，相同物品也相鄰的場景中。語意切割模型準確偵測分類物品，單由於相鄰的商品皆被分為同一類，無法切割成不同物體。因此在點雲分析時，兩個物體點雲同時被納入分析，最後得出相鄰的區域作為夾取點
+，導致夾取失敗。
+\end{itemize}
+
+
+\begin{table}[bt]
+\centering
+\caption{定姿態夾取與放置演算法比較。誠如商品語意資料集段落所述，所有品牌文字於子測試集中場景Single-1、Duplicated-2、Multiple-3皆朝上(BN-UP)。而在其餘3個子測試集中，品牌文字有些朝上或有些朝下(BN-DOWN)。本研究發現Baseline方法在不雜亂場景(Single-1、Duplicated-2、Multiple-3)有很好的成效，但在雜亂環境中成效卻非常差，尤其是針對品牌文字朝下的物品。主動式操作系統則證明了能有效處理雜亂環境：能將物品從雜亂環境中夾出，在做特定姿態夾取動作。}
+\begin{tabular}{ll|ll|lll}
+\hline
+\multicolumn{2}{l}{} & \multicolumn{2}{c}{Baseline} & \multicolumn{3}{c}{Active} \\
+\hline
+\textbf{} & Trials & \begin{tabular}[c]{@{}l@{}}Pick\\ Succ.\end{tabular} & \begin{tabular}[c]{@{}l@{}}Place\\ Succ.\end{tabular} & \begin{tabular}[c]{@{}l@{}}First \\ Pick \\ Succ.\end{tabular} & \begin{tabular}[c]{@{}l@{}}Second \\ Pick \\ Succ.\end{tabular} & \begin{tabular}[c]{@{}l@{}}Place\\ Succ.\end{tabular} \\
+\hline
+%\textbf{ALL-BN-UP} & 410       &               &               &         & & \\
+\textbf{Single-1}        & 50        & \textbf{0.92} & \textbf{0.88} & - & -& -\\
+\hline
+\textbf{Duplicated-2}    & 180       & 0.82          & 0.76 & - & - & - \\
+\hline
+\textbf{Multiple-2}      & 180       & 0.81          & 0.69 & - & - & -\\
+\hline
+\textbf{Clutter-3} & 60 & & & & & \\
+BN-UP & 33 & 0.48 & \textbf{0.39} & 0.88 & 0.82 & \textbf{0.73} \\
+BN-DOWN & 27 & - & - & 0.85 & 0.59 & 0.59 \\
+\hline
+\textbf{Clutter-5} & 100 & & & & & \\
+BN-UP & 35 & 0.31 & \textbf{0.26} & 0.80 & 0.57 & \textbf{0.49} \\
+BN-DOWN & 65 & - & - & 0.75 & 0.45 & 0.37 \\
+\hline
+\textbf{Clutter-7} & 140 & & & & & \\
+BN-UP & 74 & 0.23 & \textbf{0.19} & 0.74 & 0.49 & \textbf{0.43} \\
+BN-DOWN & 66 & - & - & 0.74 & 0.38 & 0.33 \\
+\hline
+\end{tabular}
+\label{table:active_manipulation_evaluation}
+\end{table}
+
+\begin{figure}
+  \centering
+  \begin{subfigure}[b]{0.45\textwidth}
+    \includegraphics[width=\textwidth]{./figures/5_obj_8_suction_fail_2.jpg}
+    \caption{Brandname is small and close to edge.}
+    \label{fig:cylinder_suction_fail}
+  \end{subfigure}
+  \begin{subfigure}[b]{0.45\textwidth}
+    \includegraphics[width=\textwidth]{./figures/5_obj_13_suction_fail_3.jpg}
+    \caption{Object segmentation (low precision or high false positives).}
+    \label{fig:cuboid_suction_fail}
+  \end{subfigure}
+  \begin{subfigure}[b]{0.45\textwidth}
+    \includegraphics[width=\textwidth]{./figures/5_obj_14_suction_fail_1.jpg}
+    \caption{Duplicated objects while brandname facing downward.}
+    \label{fig:adjacent_suction_fail}
+  \end{subfigure}
+  \caption{吸盤假爪吸取物品的常見失敗案例。共舉例3種不同常見例子，每個例子從左而右分別是輸入圖片、品牌文字或物品遮罩、Groundtruth標註、以及吸盤假爪的行為。
+}
+  \label{fig:failure}
+\end{figure}
