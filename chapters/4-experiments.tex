@@ -9,10 +9,10 @@
 \subsection{分類模型的評估方法介紹}
 
 \paragraph{F-score}
-在語意切割模型評估指標方法中，常使用到精確率(Precision)與召回率(Recall)，精確率定義$\frac{True Positive}{True Positive + False Positive}$。代表分類為真實正確的樣本數，占所有被分類為正確的樣本數的比例。，而召回率定義為$\frac{True Positive}{True Positive + False Negative}$，代表分類為正確的樣本數，占應該被分為正類的比例。兩者在大型資料庫中，分數往往是會有制約的狀況。換句話說，當模型的精確率高時，召回率便會較低。反之亦然。而F-score則是權衡兩個評估方式，所產生了一個新的計算公式：。這個方法被大量用於像素級別的類別預測的評估方法。
+在語意切割模型評估指標方法中，常使用到精確率(Precision)與召回率(Recall)，精確率定義$\frac{TP}{TP + FP}$。代表分類為真實正確的樣本數，占所有被分類為正確的樣本數的比例。，而召回率定義為$\frac{TP}{TP + FN}$，代表分類為正確的樣本數，占應該被分為正類的比例。兩者在大型資料庫中，分數往往是會有制約的狀況。換句話說，當模型的精確率高時，召回率便會較低。反之亦然。而F-score則是權衡兩個評估方式，所產生了一個新的計算公式：。這個方法被大量用於像素級別的類別預測的評估方法。
 
 \paragraph{Intersection of Union (IOU)}
-Intersection over Union是物件偵測模型評估指標方法中，經常被使用到的方法，定義為$\frac{Intersection of prediction and groundtruth area}{Union of prediction and groundtruth area}$，也就是在預測結果與真實結果的聯集中，預測結果與真實結果交集的比率。通常數值大於0.5便可稱之為不錯。FCN ~\cite{long2015fully}也是使用此方法進行語意切割模型的評估。
+Intersection over Union是物件偵測模型評估指標方法中，經常被使用到的方法，定義為$\frac{Prediction \cap  Groundtruth}{Prediction \cup  Groundtruth}$，也就是在預測結果與真實結果的聯集中，預測結果與真實結果交集的比率。通常數值大於0.5便可稱之為不錯。FCN ~\cite{long2015fully}也是使用此方法進行語意切割模型的評估。
 
 \subsection{實驗設計}
 
@@ -30,13 +30,13 @@ Intersection over Union是物件偵測模型評估指標方法中，經常被使
 	\centering
 	\includegraphics[height=!, width=0.8\linewidth, keepaspectratio=true]
 	{./figures/iou_deltatheta.jpg}
-  \caption{}
+  \caption{品牌文字語意切割的IoU與$\delta\theta$範例。低IoU與會造成較大的$\delta\theta$，並可能直接影響夾取可行性系統，造成之後的主動式操作系統夾取失敗。反之亦然，IoU愈高，則$\delta\theta$愈小，夾取可行性預測將愈準確。}
   \label{figure:iou_deltatheta}
 \end{figure}
 
 \begin{table}[tb]
 \centering
-\caption{Evaluation of brandname segmentation. Scene: number of scenes, Vis. BN: number of visible brandnames, Num.: number and percentage of brandnames that IoU $<$ 0.5.}
+\caption{品牌文字語意切割模型評估表. Scene: 場景的數量, Vis. BN: 可是品牌文字的數量, Num.: 品牌文字IoU 小於 0.5的數量。}
 \label{tbl:segmentation}
 \tabcolsep=4pt
 \begin{tabular}{l|cc|crcc}
@@ -57,6 +57,6 @@ Clutter-7                      & 20                        & 0.53               
 	\centering
 	\includegraphics[height=!, width=0.8\linewidth, keepaspectratio=true]
 	{./figures/failure_case.jpg}
-  \caption{}
+  \caption{語意切割模型失敗範例。以品牌文字為單元，並以IoU = 0.5為門檻，定義小於0.5者為失敗的語意切割。本圖中共介紹4類常出現的失敗案例。}
   \label{figure:failure_case}
 \end{figure}
