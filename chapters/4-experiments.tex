@@ -28,7 +28,7 @@ Intersection over Union是物件偵測模型評估指標方法中，經常被使
 
 \begin{figure}[ht]
 	\centering
-	\includegraphics[height=!, width=0.8\linewidth, keepaspectratio=true]
+	\includegraphics[height=!, width=1.0\linewidth, keepaspectratio=true]
 	{./figures/iou_deltatheta.jpg}
   \caption{品牌文字語意切割的IoU與$\delta\theta$範例。低IoU與會造成較大的$\delta\theta$，並可能直接影響夾取可行性系統，造成之後的主動式操作系統夾取失敗。反之亦然，IoU愈高，則$\delta\theta$愈小，夾取可行性預測將愈準確。}
   \label{figure:iou_deltatheta}
@@ -55,7 +55,7 @@ Clutter-7                      & 20                        & 0.53               
 
 \begin{figure}[ht]
 	\centering
-	\includegraphics[height=!, width=0.8\linewidth, keepaspectratio=true]
+	\includegraphics[height=!, width=1.0\linewidth, keepaspectratio=true]
 	{./figures/failure_case.jpg}
   \caption{語意切割模型失敗範例。以品牌文字為單元，並以IoU = 0.5為門檻，定義小於0.5者為失敗的語意切割。本圖中共介紹4類常出現的失敗案例。}
   \label{figure:failure_case}
@@ -120,17 +120,17 @@ BN-DOWN & 66 & - & - & 0.74 & 0.38 & 0.33 \\
 
 \begin{figure}
   \centering
-  \begin{subfigure}[b]{0.45\textwidth}
+  \begin{subfigure}[b]{0.8\textwidth}
     \includegraphics[width=\textwidth]{./figures/5_obj_8_suction_fail_2.jpg}
     \caption{Brandname is small and close to edge.}
     \label{fig:cylinder_suction_fail}
   \end{subfigure}
-  \begin{subfigure}[b]{0.45\textwidth}
+  \begin{subfigure}[b]{0.8\textwidth}
     \includegraphics[width=\textwidth]{./figures/5_obj_13_suction_fail_3.jpg}
     \caption{Object segmentation (low precision or high false positives).}
     \label{fig:cuboid_suction_fail}
   \end{subfigure}
-  \begin{subfigure}[b]{0.45\textwidth}
+  \begin{subfigure}[b]{0.8\textwidth}
     \includegraphics[width=\textwidth]{./figures/5_obj_14_suction_fail_1.jpg}
     \caption{Duplicated objects while brandname facing downward.}
     \label{fig:adjacent_suction_fail}
