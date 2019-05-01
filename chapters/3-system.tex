@@ -10,7 +10,7 @@
 \section{硬體架構與工作環境配置}
 本研究提出的系統建立在兩隻協作型手臂上（圖~\ref{figure:robot_system_v2}）。一為6軸機械協作手臂UR5，並裝上Robotiq 2F-85雙指夾爪作為末端效應器以及RGB-D深度攝影機Realsense SR300，另一隻手臂則是6軸機械協作手臂UR3，並裝上自製的吸盤夾爪。這兩隻手臂被固定在同一張桌上，並彼此距離1公尺。此外，桌上有兩個盒子在手臂之間，一個盒子是被裝滿物品的，而另一個而是空的。裝滿物體的盒子上有配置深度攝影機，作為觀察盒子物體用，而空盒則作為第一次夾取的暫時放置空間。整個系統會從充滿物品的盒子開始：UR3吸盤夾爪把物體從雜亂的盒子中取出，並放到空盒或停留於空中作為暫時位置，等待UR52指夾爪夾取並以特定姿勢擺放至架上固定的格子裡。最後回到初始位置，重複執行任務至盒內沒有物體。
 
-\begin{figure}[ht]
+\begin{figure}[H]
 	\centering
 	\includegraphics[height=!, width=1.0\linewidth, keepaspectratio=true]
 	{./figures/hardware_archi_v2.jpg}
@@ -23,7 +23,7 @@
 \subsection{設備介紹}
 本研究在系統部份計劃能透過機器人主動式操作系統，改善機器人感知以及夾取成功率。因此十分重視系統的配置。關鍵系統的成敗末過於實驗設備的選擇。在手臂、夾爪、感測器之選擇，進行深入的研究，因此接下來將會逐一分析使用設備之性能以及使用原因。
 
-\begin{figure}[ht]
+\begin{figure}[H]
   \centering
   \includegraphics[height=!, width=1.0\linewidth, keepaspectratio=true]
   {./figures/hardware_list.jpg}
@@ -48,7 +48,7 @@ UR5與UR3協作機械手臂乃優傲機械人有限公司(Universal Robots)所�
 \paragraph{自製吸盤夾爪系統}
 吸盤適合用來夾取表面較平整之物品，且比起2指夾爪，夾取物品的成功率高上許多，因此將吸盤夾爪作為第一次的夾取工具。本研究自製吸盤夾爪系統，其包含空氣壓縮機、真空產生器、吸盤夾爪、以及控制板Arduino UNO。但要設計一個好的吸盤夾爪系統有相當多面相需要考慮：如系統對於物品的垂直吸力與水平吸力、吸盤大小材質的選擇、吸取物品的穩定度。關於系統的對物品的垂直吸力與水平吸力，與真空產生器的真空產生器能力以及吸盤面積成正比，真空產生器愈好，吸力便愈強。通常最大吸力的方式會是物品重量的10倍，因為吸取穩定度會隨著物體表面材質與物體大小而有影響。吸盤面積選擇的考量則是吸盤面積愈大，吸取物品會愈穩定，但是漏氣的機率也會提升。空氣壓縮機則是需要有足夠的排氣量供真空產生器使用，因此容量必須有數10升才夠使用。經由以上的考量，空氣壓縮機乃使用SWAN空氣壓縮機公司之DRS-210-39無油式空壓機，使用壓力可達7 kg/$cm^{2}$，並儲存39公升空氣，充滿空氣時可連續使用半小時，並且方便運輸。而真空產生器則採用MISUMI公司之VJHB6-7，產出之氣壓可達-0.95 kg/$cm^{2}$，且有真空產生、真空破壞等多段式氣壓調整功能，方便系統進行夾取，與輕巧的放置。最後搭配自製之吸盤夾爪，此吸盤夾爪可裝於UR3上，並補足其工作範圍較小的問題，此外吸盤內徑為0.02cm，搭配真空產生器、空氣壓縮機，垂直作用力可達3 kg，經由測試，可應付市面上大部分的商品。而Arduino UNO作為最簡易的控制開發版，用來控制真空產生器，調整吸盤吸力力道，而且此開發板支援機器人操作系統(Robot Operation System)，簡化系統開發的時間。
 
-\begin{figure}[ht]
+\begin{figure}[H]
 	\centering
 	\includegraphics[height=!, width=1.0\linewidth, keepaspectratio=true]
 	{./figures/suction_system.jpg}
@@ -69,7 +69,8 @@ UR5與UR3協作機械手臂乃優傲機械人有限公司(Universal Robots)所�
 \subsection{選用物品}
 本研究選用之商品參考Amazon Picking Challenge 2016, 2017年所用之物品，從中挑選一些堅固不容易變形之物品、並加入額外商品成為最後的20類目標物品。這些商品包含市面上常見的可樂、番茄醬罐、洋芋片等（圖~\ref{figure:20_products}），皆是常被放置於貨架上讓消費者挑選的物品。這些物品將用於特定姿態之自動上架任務，由於選用的語意線索為品牌文字，因此希望品牌文字不會再同個商品中重複多次，此外品牌文字也需清楚。因此選用之商品皆遵守以下的規則：1. 品牌文字高度皆至少大於1.5cm。 2.品牌文字皆為單行。3. 品牌文字不重複出現於物品上。在這20類商品中依照形狀分類可再在分類成8個圓柱體以及12個長方體。
 
-\begin{figure}[ht]
+
+\begin{figure}[H]
 	\centering
 	\includegraphics[height=!, width=1.0\linewidth, keepaspectratio=true]
 	{./figures/20_products.jpg}
@@ -77,26 +78,17 @@ UR5與UR3協作機械手臂乃優傲機械人有限公司(Universal Robots)所�
   \label{figure:20_products}
 \end{figure}
 
+
 \subsection{真實世界訓練集}
 這部分資料集蒐集的方法參考這份研究~\cite{zeng2016multi}，這份研究的技術也被應用於Amazon Picking Challenge 2016。每一個場景中，單一物品被隨意放置於盒子中，一個RGB-D攝影機安裝於UR5上，用於可系統的移動手臂並在多個視角自動蒐集資料。本研究選擇20個商品做為目標物品。資料集總共有920 場景（scenes） $\times$ 31 視角（views）（圖~\ref{figure:benchmark-dataset}）。換句話說，一個場景代表物體的一種擺放方式，參考物體的形狀，每個物體所分配的場景也不完全相同，圓柱體較少場景，而長方體場景較多，不過場景範圍都落於40$\sim$50。20個物體共有920個擺放方式，每種擺放方式都有31個不同視角的紀錄。所有圖片總和將近29000張圖片。
 
-\paragraph{物體標注}
-標注像素級別的資料是一個相當費時的工作，因此為了自動化像素級別的物件標注，本研究利用全卷積網路以及影像處理演算法去建造一個半自動資料標注系統。在訓練集中，拍攝下的影像中都只會有惟一的物體放置於盒內，再加上少許的地面，因此背景較單純。利用背景的單純，便可以利用少許的資料訓練出一個2類(物體、背景)的物件切割模型，此模型有能力去分辨背景與物件。為了建立半自動資料標注系統，使用標注工具~\cite{russell2008labelme}先標注約500張圖片。之後運用這些標注資料作為訓練資料對全卷積網路VGG16-FCN權重進行微調後，來對剩餘圖片預測像素級別的物件切割。由於標注資料不多，因此預測結果仍會有一些雜訊，因此取範圍最大的區域作為最後的標注結果。雖然藉由模型來標注的結果不會完全與人為標注相同（圖~\ref{figure:auto_object_label}），但也足夠做為標注資料作為20+1類的物件語意切割模型的訓練資料。
-
-\begin{figure}[ht]
-	\centering
-	\includegraphics[height=!, width=1.0\linewidth, keepaspectratio=true]
-	{./figures/auto_object_label.png}
-  \caption{自動標注與人為標注之比較。觀察自動與人為標注之結果，可發現自動標注在邊緣部份效果較不好，與平滑的人為標注相比，多出許多稜角出來。但此結果仍足以作為訓練資料使用。}
-  \label{figure:auto_object_label}
-\end{figure}
-
 
 \paragraph{品牌文字標注}
-研究透過品牌文字定義物品姿態，目的是為了可以有效解決以物品遮罩定義物品姿態，無法有效解決物品幾何對稱性的問題。例如一個圓柱或是長方體形狀的物體，沿著任何一軸翻轉，其幾何形狀仍是不變。但藉由具有文字方向的品牌文字，便可以去解決這個問題。本研究定義品牌文字方向為品牌文字的X軸，而品牌文字的Z軸則為品牌文字的平面法向量。基於如此的定義，本研究將訓練一個具有旋轉差異性之品牌文字語意分割器。為了訓練一個具旋轉差異性(rotation-variant)且完整無遮蔽的品牌文字偵測器。因此一個本研究設計一個具旋轉差異性的標注規則：當品牌文字方向與水平線夾角介於-45$^{\circ}$ ~45$^{\circ}$ 之間，而且品牌文字區域需有一半以上是看的見的，品牌文字才可以被標注（圖~\ref{figure:reak_bn_rule}）。因此在28498張圖片中共有30\%的圖片被標注品牌文字。品牌文字的標注方法是用多邊形框住的。透過這樣的標注方法，此訓練集達成透過圖片標注方法，便有定義三維姿態的能力。
+本研究透過品牌文字定義物品姿態，目的是為了可以有效解決以物品遮罩定義物品姿態，無法有效解決物品幾何對稱性的問題。例如一個圓柱或是長方體形狀的物體，沿著任何一軸翻轉，其幾何形狀仍是不變。但藉由具有文字方向的品牌文字，便可以去解決這個問題。本研究希望藉由圖片定義品牌文字的姿態，因此假設品牌文字可被一個旋轉矩形(rotated rectangle)所框住，且矩形長邊必為品牌文字方向，於此本研究定義品牌文字方向為品牌文字姿態的X軸，而品牌文字的姿態Z軸則為品牌文字的平面法向量。藉由這兩軸定義品牌文字旋轉角(orientation)。而中心點則是品牌文旋轉矩形的中點。基於如此的定義，本研究將訓練一個具有旋轉差異性之品牌文字語意分割模型。換句話說，品牌文字方向需在圖片中是由左至右，若品牌文字被旋轉180$^{\circ}$，變成品牌文字由右至左時，此語意切割模型。要能辨識其差別。為了訓練此具旋轉差異性(rotation-variant)且完整無遮蔽的品牌文字偵測器。因此本研究設計兩個具旋轉差異性的標註規則：1. 當品牌文字方向與水平線夾角介於-45$^{\circ}$$\sim$45$^{\circ}$ 之間，品牌文字才可以被標註。
+標注角度範圍採用-45$^{\circ}$$\sim$45$^{\circ}$ ，而非-90$^{\circ}$$\sim$90$^{\circ}$，是考量若範圍設計在$\pm$90$^{\circ}$之間，將導致在$\pm$90$^{\circ}$附近的偵測效果會容易誤判。但設定在$\pm$45$^{\circ}$之間，預期結果會是偵測出的品牌文字有很高的可信度文字方向將會是由左而右。2. 品牌文字區域需有一半以上是看的見的，品牌文字才可以被標註。這個規則是基於找出的品牌文字要有一定程度的完整性，用其預測物品姿態才有可信度。在遵守以上的規則標注下，28498張圖片中共有30\%的圖片被標註品牌文字。品牌文字的標註方法是用多邊形框住的。透過這樣的標註方法，此訓練集達成透過圖片標註方法，便有定義三維姿態的能力。
 
 
-\begin{figure}[ht]
+\begin{figure}[H]
 	\centering
 	\includegraphics[height=!, width=1.0\linewidth, keepaspectratio=true]
 	{./figures/reak_bn_rule.jpg}
@@ -104,25 +96,52 @@ UR5與UR3協作機械手臂乃優傲機械人有限公司(Universal Robots)所�
   \label{figure:reak_bn_rule}
 \end{figure}
 
-\paragraph{條型碼標注}
-型碼就像是商品的身分證，無論在物流運送、商店結帳、盤貨，都是不可或缺的存在。因此建立商品語意資料庫，條型碼也是重要的標注資料。但條型碼的資料佔的區域較小，因此在28498張圖片中共有20\%的圖片被標注品牌文字。
+\paragraph{物體標注}
+標注像素級別的資料是一個相當費時的工作，因此為了自動化像素級別的物件標注，本研究利用全卷積網路以及影像處理演算法去建造一個半自動資料標注系統。在訓練集中，拍攝下的影像中都只會有惟一的物體放置於盒內，再加上少許的地面，因此背景較單純。利用背景的單純，便可以利用少許的資料訓練出一個2類(物體、背景)的物件切割模型，此模型有能力去分辨背景與物件。為了建立半自動資料標注系統，使用標注工具~\cite{russell2008labelme}先標注約500張圖片。之後運用這些標注資料作為訓練資料對全卷積網路VGG16-FCN權重進行微調後，來對剩餘圖片預測像素級別的物件切割。由於標注資料不多，因此預測結果仍會有一些雜訊，因此取範圍最大的區域作為最後的標注結果。雖然藉由模型來標注的結果不會完全與人為標注相同（圖~\ref{figure:auto_object_label}），但也足夠做為標注資料作為20+1類的物件語意切割模型的訓練資料。
 
-\begin{figure}[ht]
+\begin{figure}[H]
 	\centering
 	\includegraphics[height=!, width=1.0\linewidth, keepaspectratio=true]
-	{./figures/real_and_vir_environment.jpg}
-  \caption{於現實與虛擬環境蒐集訓練集。左上：虛擬環境建立示意圖。右上：虛擬資料標注自動標注。藉由3D Builder創造物品三維模型，之後建立相似現實環境的紅色盒子於Unity中，並架設相機與物品以蒐集虛擬資料集。蒐集資料時在虛擬與現實的每一個場景中都只有一個物品，這靈感取自~\cite{zeng2016multi}說明在單一場景單一物品並利用巨量資料集的訓練語意切割模型之下，在之後多物品場景的情況下仍能得到不錯效果。}
-  \label{figure:benchmark-dataset}
+	{./figures/auto_object_label.png}
+  \caption{自動標注與人為標注之比較。觀察自動與人為標注之結果，可發現自動標注在邊緣部份效果較不好，與平滑的人為標注相比，多出許多稜角出來。但此結果仍足以作為訓練資料使用。}
+  \label{figure:auto_object_label}
+\end{figure}
+
+\paragraph{條型碼標注}
+型碼就像是商品的身分證，無論在物流運送、商店結帳、盤貨，都是不可或缺的存在。因此建立商品語意資料庫，條型碼也是重要的標注資料。但條型碼的資料佔的區域較小，因此在28498張圖片中共有20\%的圖片被標注品牌文字（圖~\ref{figure:barcode_label_example}）。
+
+\begin{figure}[H]
+	\centering
+	\includegraphics[height=!, width=0.8\linewidth, keepaspectratio=true]
+	{./figures/barcode_label_example.jpg}
+  \caption{條型碼標注範例。}
+  \label{figure:barcode_label_example}
 \end{figure}
 
 \subsection{虛擬世界訓練集}
 \paragraph{建置虛擬環境}
 為了建立一個逼真現實世界的虛擬環境，本研究在Unity建立一個相仿真實盒子規格(顏色、尺寸)的模擬盒子，並在蒐集資料時隨機調整虛擬環境亮度(圖~\ref{figure:benchmark-dataset})，此外針對物品模型，為了避免三維模型扭曲，與得到高解析度的材質貼圖(texture)，本研究使用3D建模軟體3D Builder ~\cite{3DBuilder}，手動繪製3D模型，並用高解析度相機近距離所拍攝之物品圖片作為材質貼圖嵌入模型中，成為最後之模型。此外本研究也在模擬環境中加入多顆彩色與深度相機去蒐集虛擬世界中的資料。相機中有些專門拍攝物體、有些則拍攝場景、盒子，藉此讓虛擬環境中的標注資料可自動取得，可大量產生虛擬訓練資料。資料集有200 場景（scenes）$\times$ 54 視角（views），共10800張圖片。附註：本研究以10800張虛擬資料作為虛擬資料庫示範用，虛擬資料優勢在於資料可無上限的生產，且無需人力，因此這些資料可在短時間內大量自動蒐集，一張圖片包含各類標注可於0.1秒內完成。
 
-\paragraph{資料增強}
-參考蒐集到的真實環境資料可發現，在真實環境中，常有兩大圖片噪音：動態模糊(motion blur)以及失焦高斯噪音(out of focus Gaussian noise)，因此本研究將這些干擾加入蒐集好的虛擬資料去增加虛擬資料的變異性。總共加入各自2類的動態模糊與失焦高斯噪音，因此資料量提升至原本的4倍，共43200張圖片。
+\begin{figure}[H]
+	\centering
+	\includegraphics[height=!, width=0.9\linewidth, keepaspectratio=true]
+	{./figures/real_and_vir_environment.jpg}
+  \caption{於現實與虛擬環境蒐集訓練集。左上：虛擬環境建立示意圖。右上：虛擬資料標注自動標注。藉由3D Builder創造物品三維模型，之後建立相似現實環境的紅色盒子於Unity中，並架設相機與物品以蒐集虛擬資料集。蒐集資料時在虛擬與現實的每一個場景中都只有一個物品，這靈感取自~\cite{zeng2016multi}說明在單一場景單一物品並利用巨量資料集的訓練語意切割模型之下，在之後多物品場景的情況下仍能得到不錯效果。}
+  \label{figure:benchmark-dataset}
+\end{figure}
 
-\begin{table}[ht]
+\paragraph{資料增強}
+參考蒐集到的真實環境資料可發現，在真實環境中，常有兩大圖片噪音：動態模糊(motion blur)以及失焦高斯噪音(out of focus Gaussian noise)，因此本研究將這些干擾加入蒐集好的虛擬資料去增加虛擬資料的變異性。總共加入各自2類的動態模糊與失焦高斯噪音（圖~ref{figure:image_augu}），因此資料量提升至原本的4倍，共43200張圖片。
+
+\begin{figure}[H]
+	\centering
+	\includegraphics[height=!, width=0.9\linewidth, keepaspectratio=true]
+	{./figures/image_augu.jpg}
+  \caption{圖片資料增強範例。}
+  \label{figure:image_augu}
+\end{figure}
+
+\begin{table}[H]
 \caption{虛擬與真實世界訓練的場景、視角、影像增強數量整理. 並列出訓練集中物體（OBJ）, 品牌文字(BN), 還有條碼(BAR)標注數量。}
 \centering
 \begin{tabular}{rrrr|rrr}
@@ -152,7 +171,7 @@ UR5與UR3協作機械手臂乃優傲機械人有限公司(Universal Robots)所�
 在這3個子測試集，遮蔽、雜亂、堆疊情況隨著數量增加而變的更困難與複雜，更趨近於真實環境的上架任務場景。因此非常適合用來評估操作系統能否有效應付噪音、遮蔽、雜亂的問題。
 
 
-\begin{figure}[htb]
+\begin{figure}[H]
 	\centering
 	\includegraphics[height=!, width=1.0\linewidth, keepaspectratio=true]
 	{./figures/testset.jpg}
@@ -167,7 +186,7 @@ UR5與UR3協作機械手臂乃優傲機械人有限公司(Universal Robots)所�
 \subsection{品牌文字語意切割與姿態預測}
 許多發展很久的以物件為單元的物件偵測器可以產生邊界框(Bounding Box)框住物體，這樣的方法不足以去解決考慮特定姿態放置的問題。因此本研究使用品牌文字作為線索去處理物件姿態的問題。這樣的好處是文字以閱讀上來說本身便具有方向性，且文字有其規律性。因此，本研究以品牌文字姿態(文字方向作為X軸、文字平面法向量作為Z軸)去定義物件姿態。並以全卷積網路架構FCN-VGG-DICTNET~\cite{peterthesis}訓練出一個全卷積網路模型，目標去偵測具旋轉差異性的品牌文字。換句話說，本研究預期當品牌文字與圖片水平線夾角介於-45$^{\circ}$ $\sim$ 45$^{\circ}$ 之間，才偵測的出來。如此藉由旋轉圖片4次(0$^{\circ}$、90$^{\circ}$、180$^{\circ}$、270$^{\circ}$)方式再進行預測，預訓練模型可達到在任何角度都能找到具旋轉差異性的遮罩。之後由於在一個場景中可能有多個品牌文字，利用Seed filling algorithm找到連結在一起的同一類，並視為一個品牌文字遮罩。此外在文字角度接近45$^{\circ}$、-45$^{\circ}$可能會在不同旋轉角度圖片都預測出相同的品牌文字，這種情況下，本研究選擇較大的遮罩而不是較小的遮罩。以上是關於考慮旋轉差異性的品牌文字遮罩生成方法，接下來將討論如何生成文字姿態。基於選用之品牌文字皆為單行，因此可假設遮罩為一個旋轉矩形，並找出長邊作為文字方向，利用此遮罩與點雲的結合，以此使用品牌文字姿態的定義(文字方向作為X軸、文字平面法向量作為Z軸)進行計算(圖~\ref{figure:text-pose-extimation-pipeline})。
 
-\begin{figure}[ht]
+\begin{figure}[H]
 	\centering
 	\includegraphics[height=!, width=1.0\linewidth, keepaspectratio=true]
 	{./figures/text-pose-extimation-pipeline.jpg}
@@ -182,7 +201,7 @@ UR5與UR3協作機械手臂乃優傲機械人有限公司(Universal Robots)所�
 \paragraph{2指夾爪夾取可行性預測}
 2指夾爪夾取可行性預測（圖~\ref{figure:affordance}）乃基於品牌文字語意切割與姿態預測方法，分析品牌文字遮罩與姿態，本研究以遮罩大小進行排序，遮罩愈大，代表其偵測到品牌文字的信心指數預高，因此夾取可行性愈高，在考慮夾取姿態是否會受到盒子的阻礙進行排序，對預期會受到阻礙的夾取姿態濾除。
 
-\begin{figure}[ht]
+\begin{figure}[H]
 	\centering
 	\includegraphics[height=!, width=0.8\linewidth, keepaspectratio=true]
 	{./figures/affordance_v4.png}
@@ -216,7 +235,7 @@ UR5與UR3協作機械手臂乃優傲機械人有限公司(Universal Robots)所�
 \paragraph{品牌文字不可視的狀況下}
 在品牌文字不可視的情況下，可預期品牌文字不在物體朝上的平面，因此採取的策略為使用吸盤夾爪舉起物品至空中停留，並藉由旋轉物體的方法來找到品牌文字所在的那個平面。之後第二次的夾取，在看的到品牌文字的情況下，利用baseline方法，在空中以特定姿勢去夾取物品並放置。在第一次的夾取，乃利用物品語意分析的吸盤夾爪夾取可行性預測，運用物體級別的全卷積網路影像切割，並利用點雲的法向量與曲率去找出適合夾取的點去進行夾取。
 
-\begin{figure}[ht]
+\begin{figure}[H]
 	\centering
 	\includegraphics[height=!, width=1.0\linewidth, keepaspectratio=true]
 	{./figures/active_manipulation_and_baseline.jpg}
@@ -253,7 +272,7 @@ UR5與UR3協作機械手臂乃優傲機械人有限公司(Universal Robots)所�
 藉由從前一狀態所得夾取姿態及類別，2指夾爪對物品執行夾取任務，並移動到上架準備位置，藉由Apriltag ~\ref{olson2011apriltag}定位商品架，並將放置到指定格子，這些指定格子皆是人為定義於資料庫中。在任務執行完後手臂回到初始位置，繼續執行任務。
 
 
-\begin{figure}[ht]
+\begin{figure}[H]
 	\centering
 	\includegraphics[height=!, width=1.0\linewidth, keepaspectratio=true]
 	{./figures/FSM.jpg}
