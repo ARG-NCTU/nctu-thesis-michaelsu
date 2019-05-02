@@ -18,18 +18,19 @@ Intersection over Union是物件偵測模型評估指標方法中，經常被使
 
 \subsection{實驗設計}
 
-本研究設計了表格~\ref{tbl:segmentation}，縱軸為資料庫的所有子測試集，用來測試品牌文字切割模型，並以雜亂、遮蔽情況為標準，由簡單到複雜往下排列，橫軸則為評量的標準，第一部分為以場景(圖片)為單位的評估。這部分以F-score評估模型對整體圖片品牌文字切割的準確度。而第二部分則以所有場景中的所有品牌文字為單位，如此設計的原因是夾取可行性評估是以單一品牌文字預測標注遮罩與姿態作為線索，因此本研究十分重視對於每一個品牌文字語意切割預測的表現結果。在表格中有提供每一個子資料集所出現的可視的品牌文字數量、以及每個品牌文字預期結果與人為標注結果(groundtruth)的比較，並以IoU進行評量。依照人感官而言，IoU大於50\%，已經是很好的結果，看起來十分接近，因此本實驗預期整理出IoU大於50\%比例，並基於品牌文字皆為單行，可用旋轉矩形框住比擬的假設，針對這些品牌文字切割遮罩以一個旋轉矩形框住，去分析預測結果與真實標注的$\Delta\theta$(~\ref{figure:iou_deltatheta})。
+本研究設計了表格~\ref{tbl:segmentation}，縱軸為資料庫的所有子測試集，用來測試品牌文字切割模型，並以雜亂、遮蔽情況為標準，由簡單到複雜往下排列，橫軸則為評量的標準，第一部分為以場景(圖片)為單位的評估。這部分以F-score評估模型對整體圖片品牌文字切割的準確度。而第二部分則以所有場景中的所有品牌文字為單位，如此設計的原因是夾取可行性評估是以單一品牌文字預測標注遮罩與姿態作為線索，因此本研究十分重視對於每一個品牌文字語意切割預測的表現結果。在表格中有提供每一個子資料集所出現的可視的品牌文字數量、以及每個品牌文字預期結果與人為標注結果(groundtruth)的比較，並以IoU進行評量。依照人感官而言，IoU大於50\%，已經是很好的結果，看起來十分接近，因此本實驗預期整理出IoU大於50\%比例，並基於品牌文字皆為單行，可用旋轉矩形框住比擬的假設，針對這些品牌文字切割遮罩以一個旋轉矩形框住，去分析預測結果文字切割的完整性與以及文字方向的預測結果與真實標注的差距$\Delta\theta$(~\ref{figure:iou_deltatheta})。
 
 \begin{figure}[H]
 	\centering
 	\includegraphics[height=!, width=1.0\linewidth, keepaspectratio=true]
 	{./figures/iou_deltatheta.jpg}
-  \caption{品牌文字語意切割的IoU與$\Delta\theta$範例。低IoU與會造成較大的$\Delta\theta$，並可能直接影響夾取可行性系統，造成之後的主動式操作系統夾取失敗。反之亦然，IoU愈高，則$\Delta\theta$愈小，夾取可行性預測將愈準確。}
+  \caption{品牌文字語意切割的IoU與$\Delta\theta$範例。IoU的定義是單一品牌文字預測面積與真實面積的交集/聯集。$\theta$定義是品牌文字方向與水平線的夾角。而$\Delta\theta$定義則是$\lvert\theta_{pr}-\theta_{gd}\rvert$。IoU可用來評量品牌文字切割遮罩的完整性，而$\Delta\theta$則可以用來衡量品牌文字方向預測的準確度。透過這兩個衡量標準，可客觀的評估品牌文字切割模
+型對於品牌文字姿態預測的準確度。低IoU的預測結果容易造成較大的$\Delta\theta$，會造成品牌文字姿態辨識結果不好，並可能直接影響夾取可行性系統，造成之後的主動式操作系統夾取失敗。反之亦然，IoU愈高，則$\Delta\theta$愈小，夾取可行性預測將愈準確。}
   \label{figure:iou_deltatheta}
 \end{figure}
 
 \subsection{實驗結果與討論}
-整體上來說，此實驗證明了透過有限定範圍角度的品牌文字標注方法，可以訓練出具旋轉差異性的品牌文字切割模型，雖然仍有誤判情況發生，但是已可應用於主動式操作系統。此外，雖然在~\cite{zeng2016multi}的文獻中提出用單一物品於單一場景的訓練資料進行訓練，能在多物品複雜的場景中有好的成效，但參考表格中F-score一欄，可發現物體愈多，愈嚴重的雜亂情況下，會造成逐漸降低的F-score。同樣的以品牌文字為單位的評估中，雜亂環境也會增加預測出低IOU($ \le$ 0.5)的比率，以及惡化預測出高IOU($ \ge$  0.5)的品牌文字$\Delta\Theta$的大小，這些都會影響之後的主動式操作系統。
+整體上來說，此實驗（表格~\ref{tbl:segmentation}）證明了透過有限定範圍角度的品牌文字標注方法，可以訓練出具旋轉差異性的品牌文字切割模型，雖然仍有誤判情況發生，但是已可應用於主動式操作系統。此外，雖然在~\cite{zeng2016multi}的文獻中提出用單一物品於單一場景的訓練資料進行訓練，能在多物品複雜的場景中有好的成效，但參考表格中F-score一欄，可發現物體愈多，愈嚴重的雜亂情況下，會造成逐漸降低的F-score。同樣的以品牌文字為單位的評估中，雜亂環境也會增加預測出低IoU($ \le$ 0.5)的比率，以及惡化預測出高IoU($ \ge$  0.5)的品牌文字$\Delta\theta$的大小，這些都會影響之後的主動式操作系統。
 
 \begin{table}[H]
 \centering
@@ -51,13 +52,13 @@ Clutter-7                      & 20                        & 0.53               
 \end{table}
 
 \subsection{失敗案例分析}
-本研究觀察單一品牌文字偵測IoU$ \le$ 0.5之失敗案例，共將常出現之失敗案例分為四類。第一類(a)為不完整的遮罩。不完整的遮罩容易會造成之後，無論位置或是文字方向，品牌姿態預測的誤差。第二類(b)為類別的誤判，在此部分，不僅雖然品牌文字的部分有被偵測，但卻預測錯類別，會導致之後夾取與放置的方式錯誤，造成夾取失敗或是放錯格子的問題。第3類(c)為角度的誤判。一張圖片會以4個不同旋轉角度旋轉後再預測，最後整合為同一張圖片。此類的誤判是在錯誤的角度誤判到品牌文字，雖然偵測到品牌文字，也有正確的類別，卻會造成品牌文字方向的預測失敗。第4類(d)在商品的其餘部分偵測出品牌文字。這一類情況容易發生於較為雜亂的環境中。
+本研究觀察單一品牌文字偵測IoU$ \le$ 0.5之失敗案例，共將常出現之失敗案例分為四類(~\ref{figure:failure_case})。第一類(a)為不完整的遮罩。不完整的遮罩容易會造成之後，無論位置或是文字方向，品牌姿態預測的誤差。第二類(b)為類別的誤判，在此部分，不僅雖然品牌文字的部分有被偵測，但卻預測錯類別，會導致之後夾取與放置的方式錯誤，造成夾取失敗或是放錯格子的問題。第3類(c)為角度的誤判。一張圖片會以4個不同旋轉角度旋轉後再預測，最後整合為同一張圖片。此類的誤判是在錯誤的角度誤判到品牌文字，雖然偵測到品牌文字，也有正確的類別，卻會造成品牌文字方向的預測失敗。第4類(d)在商品的其餘部分偵測出品牌文字。這一類情況容易發生於較為雜亂的環境中。
 
 \begin{figure}[H]
 	\centering
 	\includegraphics[height=!, width=1.0\linewidth, keepaspectratio=true]
-	{./figures/failure_case.jpg}
-  \caption{語意切割模型失敗範例。以品牌文字為單元，並以IoU = 0.5為門檻，定義小於0.5者為失敗的語意切割。本圖中共介紹4類常出現的失敗案例。}
+	{./figures/failure_case_v2.jpg}
+  \caption{語意切割模型失敗範例。以品牌文字為單元，並以IoU = 0.5為門檻，IoU小於0.5者或類別分錯為失敗的語意切割。本圖中共介紹4類常出現的失敗案例。}
   \label{figure:failure_case}
 \end{figure}
 
@@ -66,16 +67,16 @@ Clutter-7                      & 20                        & 0.53               
 
 
 \subsection{實驗設計}
-本研究實驗主要目的為評估主動式操作系統成功率，共有6個測試場域集。實驗架設方式乃參考測試集場景，將物體放置成相同的位置擺法，接著藉由主動式操作系統或是baseline方法執行特定上架任務。物品必須被放置規定格子，並品牌文字朝前，才算成功。本研究設計了表格~\ref{table:active_manipulation_evaluation}，去比較主動式操作系統與baseline的成功率。表格縱軸為場景測試集，後3個子測試集再細分為品牌文字朝上的與品牌文字朝下的，去分析品牌文字朝上或朝下對於主動式操作系統的影響程度。在橫軸部分，為baseline與主動式操作系統的每一個動作。希望透過這個表格去解析系統的特性。表格中夾取成功(Pick Success)，定義為物品有被成功夾取，並直到放置前沒有掉落。而放置成功(Place Success)，定義為物品被放置於指定的格子中，並且品牌文字朝外。
+本研究實驗主要目的為評估主動式操作系統成功率，共有6個測試場域集。實驗架設方式乃參考測試集場景，將物體放置成相同的位置擺法，接著藉由主動式操作系統或是baseline方法執行特定上架任務。物品必須被放置規定格子，並且品牌文字朝外，才算成功。本研究設計了表格~\ref{table:active_manipulation_evaluation}，去比較主動式操作系統與baseline的成功率。表格縱軸為場景測試集，後3個子測試集再細分為品牌文字朝上的與品牌文字朝下的，去分析品牌文字朝上或朝下對於主動式操作系統的影響程度。在橫軸部分，為baseline與主動式操作系統的每一個動作。希望透過這個表格去解析系統的特性。表格中夾取成功(Pick Success)，定義為物品有被成功夾取，並直到放置前沒有掉落。而放置成功(Place Success)，定義為物品被放置於指定的格子中，並且品牌文字朝外。在擺放完一個場景後，每次任務共有N次機會（N為場景中物體數量）可進行夾取與放置。若此一夾取放置動作失敗，則移除該物品，直至盒子被清空。
 
 \begin{table}[H]
 \centering
-\caption{定姿態夾取與放置演算法比較。誠如商品語意資料集段落所述，所有品牌文字於子測試集中場景Single-1、Duplicated-2、Multiple-3皆朝上(BN-UP)。而在其餘3個子測試集中，品牌文字有些朝上或有些朝下(BN-DOWN)。本研究發現Baseline方法在不雜亂場景(Single-1、Duplicated-2、Multiple-3)有很好的成效，但在雜亂環境中成效卻非常差，尤其是針對品牌文字朝下的物品。主動式操作系統則證明了能有效處理雜亂環境：能將物品從雜亂環境中夾出，在做特定姿態夾取動作。}
+\caption{特定姿態夾取與放置演算法比較。誠如商品語意資料集段落所述，所有品牌文字於子測試集中場景Single-1、Duplicated-2、Multiple-3皆朝上(BN-UP)。而在其餘3個子測試集中，品牌文字有些朝上或有些朝下(BN-DOWN)。本研究發現Baseline方法在不雜亂場景(Single-1、Duplicated-2、Multiple-3)有很好的成效，但在雜亂環境中成效卻非常差，尤其是針對品牌文字朝下的物品。主動式操作系統則證明了能有效處理雜亂環境：能將物品從雜亂環境中夾出，在做特定姿態夾取動作。}
 \begin{tabular}{ll|ll|lll}
 \hline
 \multicolumn{2}{l}{} & \multicolumn{2}{c}{Baseline} & \multicolumn{3}{c}{Active} \\
 \hline
-\textbf{} & Trials & \begin{tabular}[c]{@{}l@{}}Pick\\ Succ.\end{tabular} & \begin{tabular}[c]{@{}l@{}}Place\\ Succ.\end{tabular} & \begin{tabular}[c]{@{}l@{}}First \\ Pick \\ Succ.\end{tabular} & \begin{tabular}[c]{@{}l@{}}Second \\ Pick \\ Succ.\end{tabular} & \begin{tabular}[c]{@{}l@{}}Place\\ Succ.\end{tabular} \\
+\textbf{} & 嘗試次數 & \begin{tabular}[c]{@{}l@{}}夾取\\ 成功率\end{tabular} & \begin{tabular}[c]{@{}l@{}}放置\\ 成功率\end{tabular} & \begin{tabular}[c]{@{}l@{}}第1次夾取 \\ 成功率\end{tabular} & \begin{tabular}[c]{@{}l@{}}第2次夾取 \\ 成功率\end{tabular} & \begin{tabular}[c]{@{}l@{}} 放置 \\ 成功率\end{tabular} \\
 \hline
 %\textbf{ALL-BN-UP} & 410       &               &               &         & & \\
 \textbf{Single-1}        & 50        & \textbf{0.92} & \textbf{0.88} & - & -& -\\
@@ -112,7 +113,7 @@ BN-DOWN & 66 & - & - & 0.74 & 0.38 & 0.33 \\
 \subsection{失敗案例分析}
 主動式操作系統是2階段夾取放置行為，而第一次的夾取與放置行為對於第2次的夾取任務十分重要。換句話說，若第一次夾取或放置方式失敗，導致第2次無法成功觀察品牌文字，或是無法找到有效的夾取點，便會造成任務失敗。本部分將分析第一次使用吸盤夾爪夾取物品常出現之3個失敗案例：
 \begin{itemize}
-\item 第一個案例為吸盤夾爪系統基於品牌文字為線索進行夾取可行性預測結果，但由於品牌文字面積範圍較小，且該場景品牌文字在圓柱體上。圓柱體比起長方體，原本便較少夾取點可進行夾取，適合的夾取點只有圓柱體曲面法向量垂直吸盤夾取方向向量的小範圍面積。
+\item 第一個案例為吸盤夾爪系統基於品牌文字為線索進行夾取可行性預測結果，但由於品牌文字面積範圍較小，且該場景品牌文字在圓柱體上。圓柱體比起長方體，原本便較少吸取點可供吸盤進行吸取，適合的吸取點只有圓柱體曲面法向量垂直吸盤夾取方向向量的小範圍面積。
 \item 第二個範例為在品牌文字不可視的情況下，糟糕的物品語意切割結果會影響夾取可行性預測。導致預測出不好的夾取點，不好的夾取點會造成無法夾取物品，或夾取物品後移動時容易掉落。此外在不穩定的首次夾取，可能在第2次夾取時，物品鬆脫造成夾取姿態錯誤，最後放置失敗。
 \item 第三個範例則是在品牌文字不可視時，相同物品也相鄰的場景中。語意切割模型準確偵測分類物品，單由於相鄰的商品皆被分為同一類，無法切割成不同物體。因此在點雲分析時，兩個物體點雲同時被納入分析，最後得出相鄰的區域作為夾取點
 ，導致夾取失敗。
@@ -120,19 +121,19 @@ BN-DOWN & 66 & - & - & 0.74 & 0.38 & 0.33 \\
 
 \begin{figure}[H]
   \centering
-  \begin{subfigure}[b]{0.8\textwidth}
+  \begin{subfigure}[b]{1.0\textwidth}
     \includegraphics[width=\textwidth]{./figures/5_obj_8_suction_fail_2.jpg}
-    \caption{Brandname is small and close to edge.}
+    \caption{品牌文字面積太小，且接近邊緣，不適合吸盤吸取。}
     \label{fig:cylinder_suction_fail}
   \end{subfigure}
-  \begin{subfigure}[b]{0.8\textwidth}
+  \begin{subfigure}[b]{1.0\textwidth}
     \includegraphics[width=\textwidth]{./figures/5_obj_13_suction_fail_3.jpg}
-    \caption{Object segmentation (low precision or high false positives).}
+    \caption{不準確之物體語意切割結果導致失敗。}
     \label{fig:cuboid_suction_fail}
   \end{subfigure}
-  \begin{subfigure}[b]{0.8\textwidth}
+  \begin{subfigure}[b]{1.0\textwidth}
     \includegraphics[width=\textwidth]{./figures/5_obj_14_suction_fail_1.jpg}
-    \caption{Duplicated objects while brandname facing downward.}
+    \caption{同物品相鄰，且品牌文字皆不可視之狀況。}
     \label{fig:adjacent_suction_fail}
   \end{subfigure}
   \caption{吸盤夾爪吸取物品的常見失敗案例。共舉例3種不同常見例子，每個例子從左而右分別是輸入圖片、品牌文字或物品遮罩、Groundtruth標注、以及吸盤夾爪的行為。
